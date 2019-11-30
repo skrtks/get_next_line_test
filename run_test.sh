@@ -33,4 +33,5 @@ for FILE in *; do
 		fi
 	fi
 done
+echo "${Cyan}VVV Time VVV${RESET}"
 cd ../../

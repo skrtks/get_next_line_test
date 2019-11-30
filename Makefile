@@ -40,30 +40,30 @@ re: fclean all
 # all tests
 buf1:
 	@$(CMD) -D BUFFER_SIZE=1
-	@sh run_test.sh "1"
+	time sh run_test.sh "1"
 buf2:
 	@$(CMD) -D BUFFER_SIZE=2
-	@sh run_test.sh "2"
+	time sh run_test.sh "2"
 buf5:
 	@$(CMD) -D BUFFER_SIZE=5
-	@sh run_test.sh "5"
+	time sh run_test.sh "5"
 buf6:
 	@$(CMD) -D BUFFER_SIZE=6
-	@sh run_test.sh "6"
+	time sh run_test.sh "6"
 buf20:
 	@$(CMD) -D BUFFER_SIZE=20
-	@sh run_test.sh "20"
+	time sh run_test.sh "20"
 buf25:
 	@$(CMD) -D BUFFER_SIZE=25
-	@sh run_test.sh "25"
+	time sh run_test.sh "25"
 buf1024:
 	@$(CMD) -D BUFFER_SIZE=1024
-	@sh run_test.sh "1024"
+	time sh run_test.sh "1024"
 buf5000:
 	@$(CMD) -D BUFFER_SIZE=5000
-	@sh run_test.sh "5000"
+	time sh run_test.sh "5000"
 buf10000000:
 	@$(CMD) -D BUFFER_SIZE=10000000
-	@sh run_test.sh "10000000"
+	time sh run_test.sh "10000000"
 
 .PHONY: clean fclean re all test
