@@ -26,8 +26,11 @@ test: $(ALLTESTS) fclean
 $(NAME):
 	 $(CMD) $(VARS)
 
-only:
+stdin_test:
 	$(CC) $(CFLAGS) $(SRCS) stdin_test.c -o a.out -D BUFFER_SIZE=8
+
+debug:
+	$(CC) $(CFLAGS) $(SRCS) -g main.c -o a.out -D BUFFER_SIZE=8
 	
 clean:
 	@-rm -f $(OBJS)
