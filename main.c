@@ -13,7 +13,7 @@ int main(void)
 {
 	char *line;
 
-	int fd = open("./tests/normal/5.txt", O_RDONLY | O_EXCL);
+	int fd = open("text.txt", O_RDONLY | O_EXCL);
 
 	if (fd == -1)
 		printf("error reading file\n");

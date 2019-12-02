@@ -21,7 +21,7 @@ cd $TESTFOLDER
 for FILE in *; do
 	if [ -f "${FILE}" ]; then
 		# run single test with open()
-		printf "${GREEN}▹ Running on  \"${RESET}${BOLD}${FILE}${GREEN}\":${RESET}\n\n"
+		printf "${GREEN}\n>>> Running on  \"${RESET}${BOLD}${FILE}${GREEN}\":${RESET}\n"
 		../../a.out ${FILE} > temp
 		sh ../../test.sh ${FILE} ${ANSWERFOLDER}${FILE}
 		
@@ -29,9 +29,8 @@ for FILE in *; do
 			# run single test with stdin
 			cat ${FILE} | ../../a.out > temp
 			sh ../../test.sh ${FILE} ${ANSWERFOLDER}${FILE}
-			echo ""
 		fi
 	fi
 done
-echo "${Cyan}VVV Time VVV${RESET}"
+echo "${Cyan}\nVVV Time VVV${RESET}"
 cd ../../
