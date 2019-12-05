@@ -31,6 +31,10 @@ stdin_test:
 
 debug:
 	$(CC) $(CFLAGS) $(SRCS) -g main.c -o a.out -D BUFFER_SIZE=32
+
+sanitise:
+	$(CC) $(CFLAGS) -fsanitize=address -O1 -fno-omit-frame-pointer -g \
+	$(SRCS) main.c -o a.out -D BUFFER_SIZE=32
 	
 clean:
 	@-rm -f $(OBJS)

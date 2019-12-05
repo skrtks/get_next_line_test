@@ -7,7 +7,7 @@ int main(void)
 {
 	char *line;
 	int out = 1;
-	int fd = open("main.c", O_RDONLY | O_EXCL);
+	int fd = open("text.txt", O_RDONLY | O_EXCL);
 
 	line = (char *)0x37624236487;
 	while (out == 1)
