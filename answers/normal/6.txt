@@ -1,0 +1,14 @@
+(LINE 1) [OUT 1] |/* ************************************************************************** */|
+(LINE 2) [OUT 1] |/*                                                                            */|
+(LINE 3) [OUT 1] |/*                                                        ::::::::            */|
+(LINE 4) [OUT 1] |/*   get_next_line.c                                    :+:    :+:            */|
+(LINE 5) [OUT 1] |/*                                                     +:+                    */|
+(LINE 6) [OUT 1] |/*   By: skorteka <marvin@codam.nl>                   +#+                     */|
+(LINE 7) [OUT 1] |/*                                                   +#+                      */|
+(LINE 8) [OUT 1] |/*   Created: 2019/11/25 09:40:16 by skorteka      #+#    #+#                 */|
+(LINE 9) [OUT 1] |/*   Updated: 2019/11/25 09:40:18 by skorteka      ########   odam.nl         */|
+(LINE 10) [OUT 1] |/*                                                                            */|
+(LINE 11) [OUT 1] |/* ************************************************************************** */|
+(LINE 12) [OUT 1] ||
+(LINE 13) [OUT 1] |#include "get_next_line.h"|
+(LINE 14) [OUT 0] ||

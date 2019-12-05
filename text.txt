@@ -1,3 +1,580 @@
-1234567890\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0guifwgifgewigf
-a
-abc
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   get_next_line.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: skorteka <marvin@codam.nl>                   +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2019/11/25 09:40:16 by skorteka      #+#    #+#                 */
+/*   Updated: 2019/11/25 09:40:18 by skorteka      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
+
+#include <unistd.h>
+
+static size_t	ft_buflen(const char *str)
+{
+	size_t i;
+
+	i = 0;
+	while (str[i] != '\n' && str[i] != '\0')
+		i++;
+	return (i);
+}
+
+static void		ft_empty_buf(char *buf)
+{
+	int i;
+
+	i = 0;
+	while (buf[i])
+	{
+		buf[i] = '\0';
+		i++;
+	}
+}
+
+static char		*ft_strdup(const char *s1, char **line)
+{
+	char	*new_str;
+	size_t	len;
+	size_t	i;
+
+	if (*line)
+		return (*line);
+	len = ft_strlen(s1);
+	new_str = malloc((len + 1) * sizeof(char));
+	if (!new_str)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		*(new_str + i) = *(s1 + i);
+		i++;
+	}
+	*(new_str + i) = '\0';
+	return (new_str);
+}
+
+static char		*ft_strjoin(char *line, char const *buffer, int *bi)
+{
+	char		*tmp;
+	size_t		i;
+
+	tmp = line;
+	line = malloc((ft_strlen(line) + ft_buflen(buffer) + 1) * sizeof(char));
+	if (!line)
+	{
+		free(tmp);
+		return (NULL);
+	}
+	i = 0;
+	while (tmp[i])
+	{
+		line[i] = tmp[i];
+		i++;
+	}
+	while (buffer[*bi] != '\n' && buffer[*bi] != '\0')
+	{
+		line[i] = buffer[*bi];
+		(*bi)++;
+		i++;
+	}
+	line[i] = '\0';
+	free(tmp);
+	return (line);
+}
+
+int				get_next_line(int fd, char **line)
+{
+	static char		buf[BUFFER_SIZE + 1];
+	static int		res;
+	static int		bi;
+
+	if (fd < 0 || !line || read(fd, 0, 0) == -1)
+		return (-1);
+	*line = ft_strdup("", line);
+	if (buf[bi] == '\0')
+	{
+		ft_empty_buf(buf);
+		res = read(fd, buf, BUFFER_SIZE);
+		bi = 0;
+		buf[BUFFER_SIZE] = '\0';
+	}
+	if (res <= 0 || *line == NULL)
+		return (((res < 0 || *line == NULL) ? -1 : 0));
+	if (buf[bi] != '\n' && bi < res)
+	{
+		*line = ft_strjoin(*line, buf, &bi);
+		if (!*line)
+			return (-1);
+	}
+	bi++;
+	return ((buf[bi - 1] == '\n' && bi <= res) ? 1 : get_next_line(fd, line));
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   get_next_line.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: skorteka <marvin@codam.nl>                   +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2019/11/25 09:40:16 by skorteka      #+#    #+#                 */
+/*   Updated: 2019/11/25 09:40:18 by skorteka      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
+
+#include <unistd.h>
+
+static size_t	ft_buflen(const char *str)
+{
+	size_t i;
+
+	i = 0;
+	while (str[i] != '\n' && str[i] != '\0')
+		i++;
+	return (i);
+}
+
+static void		ft_empty_buf(char *buf)
+{
+	int i;
+
+	i = 0;
+	while (buf[i])
+	{
+		buf[i] = '\0';
+		i++;
+	}
+}
+
+static char		*ft_strdup(const char *s1, char **line)
+{
+	char	*new_str;
+	size_t	len;
+	size_t	i;
+
+	if (*line)
+		return (*line);
+	len = ft_strlen(s1);
+	new_str = malloc((len + 1) * sizeof(char));
+	if (!new_str)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		*(new_str + i) = *(s1 + i);
+		i++;
+	}
+	*(new_str + i) = '\0';
+	return (new_str);
+}
+
+static char		*ft_strjoin(char *line, char const *buffer, int *bi)
+{
+	char		*tmp;
+	size_t		i;
+
+	tmp = line;
+	line = malloc((ft_strlen(line) + ft_buflen(buffer) + 1) * sizeof(char));
+	if (!line)
+	{
+		free(tmp);
+		return (NULL);
+	}
+	i = 0;
+	while (tmp[i])
+	{
+		line[i] = tmp[i];
+		i++;
+	}
+	while (buffer[*bi] != '\n' && buffer[*bi] != '\0')
+	{
+		line[i] = buffer[*bi];
+		(*bi)++;
+		i++;
+	}
+	line[i] = '\0';
+	free(tmp);
+	return (line);
+}
+
+int				get_next_line(int fd, char **line)
+{
+	static char		buf[BUFFER_SIZE + 1];
+	static int		res;
+	static int		bi;
+
+	if (fd < 0 || !line || read(fd, 0, 0) == -1)
+		return (-1);
+	*line = ft_strdup("", line);
+	if (buf[bi] == '\0')
+	{
+		ft_empty_buf(buf);
+		res = read(fd, buf, BUFFER_SIZE);
+		bi = 0;
+		buf[BUFFER_SIZE] = '\0';
+	}
+	if (res <= 0 || *line == NULL)
+		return (((res < 0 || *line == NULL) ? -1 : 0));
+	if (buf[bi] != '\n' && bi < res)
+	{
+		*line = ft_strjoin(*line, buf, &bi);
+		if (!*line)
+			return (-1);
+	}
+	bi++;
+	return ((buf[bi - 1] == '\n' && bi <= res) ? 1 : get_next_line(fd, line));
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   get_next_line.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: skorteka <marvin@codam.nl>                   +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2019/11/25 09:40:16 by skorteka      #+#    #+#                 */
+/*   Updated: 2019/11/25 09:40:18 by skorteka      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
+
+#include <unistd.h>
+
+static size_t	ft_buflen(const char *str)
+{
+	size_t i;
+
+	i = 0;
+	while (str[i] != '\n' && str[i] != '\0')
+		i++;
+	return (i);
+}
+
+static void		ft_empty_buf(char *buf)
+{
+	int i;
+
+	i = 0;
+	while (buf[i])
+	{
+		buf[i] = '\0';
+		i++;
+	}
+}
+
+static char		*ft_strdup(const char *s1, char **line)
+{
+	char	*new_str;
+	size_t	len;
+	size_t	i;
+
+	if (*line)
+		return (*line);
+	len = ft_strlen(s1);
+	new_str = malloc((len + 1) * sizeof(char));
+	if (!new_str)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		*(new_str + i) = *(s1 + i);
+		i++;
+	}
+	*(new_str + i) = '\0';
+	return (new_str);
+}
+
+static char		*ft_strjoin(char *line, char const *buffer, int *bi)
+{
+	char		*tmp;
+	size_t		i;
+
+	tmp = line;
+	line = malloc((ft_strlen(line) + ft_buflen(buffer) + 1) * sizeof(char));
+	if (!line)
+	{
+		free(tmp);
+		return (NULL);
+	}
+	i = 0;
+	while (tmp[i])
+	{
+		line[i] = tmp[i];
+		i++;
+	}
+	while (buffer[*bi] != '\n' && buffer[*bi] != '\0')
+	{
+		line[i] = buffer[*bi];
+		(*bi)++;
+		i++;
+	}
+	line[i] = '\0';
+	free(tmp);
+	return (line);
+}
+
+int				get_next_line(int fd, char **line)
+{
+	static char		buf[BUFFER_SIZE + 1];
+	static int		res;
+	static int		bi;
+
+	if (fd < 0 || !line || read(fd, 0, 0) == -1)
+		return (-1);
+	*line = ft_strdup("", line);
+	if (buf[bi] == '\0')
+	{
+		ft_empty_buf(buf);
+		res = read(fd, buf, BUFFER_SIZE);
+		bi = 0;
+		buf[BUFFER_SIZE] = '\0';
+	}
+	if (res <= 0 || *line == NULL)
+		return (((res < 0 || *line == NULL) ? -1 : 0));
+	if (buf[bi] != '\n' && bi < res)
+	{
+		*line = ft_strjoin(*line, buf, &bi);
+		if (!*line)
+			return (-1);
+	}
+	bi++;
+	return ((buf[bi - 1] == '\n' && bi <= res) ? 1 : get_next_line(fd, line));
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   get_next_line.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: skorteka <marvin@codam.nl>                   +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2019/11/25 09:40:16 by skorteka      #+#    #+#                 */
+/*   Updated: 2019/11/25 09:40:18 by skorteka      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
+
+#include <unistd.h>
+
+static size_t	ft_buflen(const char *str)
+{
+	size_t i;
+
+	i = 0;
+	while (str[i] != '\n' && str[i] != '\0')
+		i++;
+	return (i);
+}
+
+static void		ft_empty_buf(char *buf)
+{
+	int i;
+
+	i = 0;
+	while (buf[i])
+	{
+		buf[i] = '\0';
+		i++;
+	}
+}
+
+static char		*ft_strdup(const char *s1, char **line)
+{
+	char	*new_str;
+	size_t	len;
+	size_t	i;
+
+	if (*line)
+		return (*line);
+	len = ft_strlen(s1);
+	new_str = malloc((len + 1) * sizeof(char));
+	if (!new_str)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		*(new_str + i) = *(s1 + i);
+		i++;
+	}
+	*(new_str + i) = '\0';
+	return (new_str);
+}
+
+static char		*ft_strjoin(char *line, char const *buffer, int *bi)
+{
+	char		*tmp;
+	size_t		i;
+
+	tmp = line;
+	line = malloc((ft_strlen(line) + ft_buflen(buffer) + 1) * sizeof(char));
+	if (!line)
+	{
+		free(tmp);
+		return (NULL);
+	}
+	i = 0;
+	while (tmp[i])
+	{
+		line[i] = tmp[i];
+		i++;
+	}
+	while (buffer[*bi] != '\n' && buffer[*bi] != '\0')
+	{
+		line[i] = buffer[*bi];
+		(*bi)++;
+		i++;
+	}
+	line[i] = '\0';
+	free(tmp);
+	return (line);
+}
+
+int				get_next_line(int fd, char **line)
+{
+	static char		buf[BUFFER_SIZE + 1];
+	static int		res;
+	static int		bi;
+
+	if (fd < 0 || !line || read(fd, 0, 0) == -1)
+		return (-1);
+	*line = ft_strdup("", line);
+	if (buf[bi] == '\0')
+	{
+		ft_empty_buf(buf);
+		res = read(fd, buf, BUFFER_SIZE);
+		bi = 0;
+		buf[BUFFER_SIZE] = '\0';
+	}
+	if (res <= 0 || *line == NULL)
+		return (((res < 0 || *line == NULL) ? -1 : 0));
+	if (buf[bi] != '\n' && bi < res)
+	{
+		*line = ft_strjoin(*line, buf, &bi);
+		if (!*line)
+			return (-1);
+	}
+	bi++;
+	return ((buf[bi - 1] == '\n' && bi <= res) ? 1 : get_next_line(fd, line));
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   get_next_line.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: skorteka <marvin@codam.nl>                   +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2019/11/25 09:40:16 by skorteka      #+#    #+#                 */
+/*   Updated: 2019/11/25 09:40:18 by skorteka      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
+
+#include <unistd.h>
+
+static size_t	ft_buflen(const char *str)
+{
+	size_t i;
+
+	i = 0;
+	while (str[i] != '\n' && str[i] != '\0')
+		i++;
+	return (i);
+}
+
+static void		ft_empty_buf(char *buf)
+{
+	int i;
+
+	i = 0;
+	while (buf[i])
+	{
+		buf[i] = '\0';
+		i++;
+	}
+}
+
+static char		*ft_strdup(const char *s1, char **line)
+{
+	char	*new_str;
+	size_t	len;
+	size_t	i;
+
+	if (*line)
+		return (*line);
+	len = ft_strlen(s1);
+	new_str = malloc((len + 1) * sizeof(char));
+	if (!new_str)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		*(new_str + i) = *(s1 + i);
+		i++;
+	}
+	*(new_str + i) = '\0';
+	return (new_str);
+}
+
+static char		*ft_strjoin(char *line, char const *buffer, int *bi)
+{
+	char		*tmp;
+	size_t		i;
+
+	tmp = line;
+	line = malloc((ft_strlen(line) + ft_buflen(buffer) + 1) * sizeof(char));
+	if (!line)
+	{
+		free(tmp);
+		return (NULL);
+	}
+	i = 0;
+	while (tmp[i])
+	{
+		line[i] = tmp[i];
+		i++;
+	}
+	while (buffer[*bi] != '\n' && buffer[*bi] != '\0')
+	{
+		line[i] = buffer[*bi];
+		(*bi)++;
+		i++;
+	}
+	line[i] = '\0';
+	free(tmp);
+	return (line);
+}
+
+int				get_next_line(int fd, char **line)
+{
+	static char		buf[BUFFER_SIZE + 1];
+	static int		res;
+	static int		bi;
+
+	if (fd < 0 || !line || read(fd, 0, 0) == -1)
+		return (-1);
+	*line = ft_strdup("", line);
+	if (buf[bi] == '\0')
+	{
+		ft_empty_buf(buf);
+		res = read(fd, buf, BUFFER_SIZE);
+		bi = 0;
+		buf[BUFFER_SIZE] = '\0';
+	}
+	if (res <= 0 || *line == NULL)
+		return (((res < 0 || *line == NULL) ? -1 : 0));
+	if (buf[bi] != '\n' && bi < res)
+	{
+		*line = ft_strjoin(*line, buf, &bi);
+		if (!*line)
+			return (-1);
+	}
+	bi++;
+	return ((buf[bi - 1] == '\n' && bi <= res) ? 1 : get_next_line(fd, line));
+}
