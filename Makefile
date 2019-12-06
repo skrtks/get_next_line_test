@@ -27,10 +27,13 @@ $(NAME):
 	 $(CMD) $(VARS)
 
 stdin_test:
-	$(CC) $(CFLAGS) $(SRCS) stdin_test.c -o a.out -D BUFFER_SIZE=8
+	$(CC) $(CFLAGS) $(SRCS) stdin_test.c -o a.out -D BUFFER_SIZE=32
 
 debug:
 	$(CC) $(CFLAGS) $(SRCS) -g main.c -o a.out -D BUFFER_SIZE=32
+
+1GB_buffer:
+	$(CC) $(CFLAGS) $(SRCS) -g main.c -o a.out -D BUFFER_SIZE=1000000000
 
 sanitise:
 	$(CC) $(CFLAGS) -fsanitize=address -O1 -fno-omit-frame-pointer -g \

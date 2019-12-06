@@ -5,36 +5,36 @@
 
 int main(void)
 {
-	char *line;
-	int out = 1;
-	int fd;
-	int i = 0;
-	while (i < 100)
-	{
-		out = 1;
-		fd = open("../get_next_line/get_next_line.c", O_RDONLY | O_EXCL);
-
-		while (out == 1)
-		{
-			out = get_next_line(fd, &line);
-			printf("[OUT %i][%s]\n", out, line);
-			free(line);
-		}
-		close(fd);
-		i++;
-	}
-
 	// char *line;
 	// int out = 1;
-	// int fd = open("../get_next_line/get_next_line.c", O_RDONLY | O_EXCL);
-
-	// while (out == 1)
+	// int fd;
+	// int i = 0;
+	// while (i < 100)
 	// {
-	// 	out = get_next_line(fd, &line);
-	// 	printf("[OUT %i][%s]\n", out, line);
-	// 	free(line);
+	// 	out = 1;
+	// 	fd = open("../get_next_line/get_next_line.c", O_RDONLY | O_EXCL);
+
+	// 	while (out == 1)
+	// 	{
+	// 		out = get_next_line(fd, &line);
+	// 		printf("[OUT %i][%s]\n", out, line);
+	// 		free(line);
+	// 	}
+	// 	close(fd);
+	// 	i++;
 	// }
-	// close(fd);
+
+	char *line;
+	int out = 1;
+	int fd = open("../get_next_line/get_next_line.c", O_RDONLY | O_EXCL);
+
+	while (out == 1)
+	{
+		out = get_next_line(fd, &line);
+		printf("[OUT %i][%s]\n", out, line);
+		free(line);
+	}
+	close(fd);
 
 	// char *line1;
 	// out = 1;
